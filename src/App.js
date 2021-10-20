@@ -1,25 +1,53 @@
-import logo from './logo.svg';
-import './App.css';
+import {
+  BrowserRouter as Router,
+  // Route,
+  Switch,
+  // useHistory,
+} from "react-router-dom";
+import "./App.css";
+import PrivateRoute from "./pages/PrivateRoute";
+// import { API, setAuthToken } from "./config/api";
 
 function App() {
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <Switch>
+        <PrivateRoute />
+      </Switch>
+    </Router>
   );
 }
 
 export default App;
+
+// const history = useHistory();
+// if (localStorage.token) {
+//   setAuthToken(localStorage.token);
+// }
+// const cekAuthorization = async () => {
+//   try {
+//     const token = localStorage.getItem("token");
+//     const res = await API.get("/authorization");
+//     console.log(res)
+//     const response = res.data.data;
+
+//     dispatch({
+//       type: "login_success",
+//       payload: { ...response, token },
+//     });
+//   } catch (error) {
+//     console.log(error)
+//     if (error.status === "failed") {
+//       dispatch({
+//         type: "logout",
+//         payload: {},
+//       });
+//       history.push("/");
+//     }
+//   }
+// };
+
+// useEffect(() => {
+//   cekAuthorization();
+// }, []);
