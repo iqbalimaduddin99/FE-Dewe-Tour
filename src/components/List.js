@@ -1,9 +1,18 @@
+import { useState } from "react";
 import { List, Table } from "react-bootstrap";
 import CardPayment from "../atoms/Payment";
+import Payment from "../atoms/Payment";
 
 function Transaction() {
+  const [show, setShow] = useState(false)
+
+  const handlePayment = () => {
+    setShow(!show)
+  }
   return (
     <div style={{ margin:'40px 50px 30px', display: "flex", justifyContent: "center" }}>
+      
+    <Payment show={show} />
       <Table striped bordered hover >
         <thead>
           <tr style={{background:'white'}}>
@@ -29,7 +38,7 @@ function Transaction() {
           <tr>
             <td>3</td>
             <td colSpan="2">Larry the Bird</td>
-            <td>@twitter</td>
+            <td onClick={handlePayment} >Click This</td>
           </tr>
         </tbody>
       </Table>

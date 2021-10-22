@@ -7,12 +7,18 @@ import { API, setAuthToken } from "../config/api";
 import { Button, Form, Modal } from "react-bootstrap";
 
 const RegisterModal = ({ register, setRegister, setLogin }) => {
-  const [input, setInput] = useState({ email: "", password: "" });
+  const [input, setInput] = useState({
+    email: "",
+    password: "",
+    fullName: "",
+    phone: "",
+    address: "",
+  });
   const [isLoading, setLoading] = useState("");
   const [error, setError] = useState("");
 
   const onHideLogin = () => setRegister(!register);
-  const { email, password } = input;
+  const { email, password, fullName, phone, address } = input;
 
   const onChangeInput = (e) => {
     setInput({
@@ -20,10 +26,23 @@ const RegisterModal = ({ register, setRegister, setLogin }) => {
       [e.target.name]: e.target.value,
     });
   };
-  const onSubmitLogin = async (e) => {
+  const onSubmitRegister = async (e) => {
     e.preventDefault();
     try {
-      setInput({ email: "", password: "" });
+      const getItem = localStorage.getItem("user");
+      const userData = JSON.parse(getItem);
+      if (userData.email === input.email) {
+        alert("Email already registered");
+      }
+      localStorage.setItem("user", JSON.stringify(input));
+
+      setInput({
+        email: "",
+        password: "",
+        fullName: "",
+        phone: "",
+        address: "",
+      });
     } catch (error) {
       const e = error?.res;
       if (e === 401 || e === 400) {
@@ -44,8 +63,9 @@ const RegisterModal = ({ register, setRegister, setLogin }) => {
     setLogin(true);
   };
 
-  return register && (
-<div>
+  return (
+    register && (
+      <div>
         <div className="overlay" onClick={onHideLogin} />
         <div className="lp-modal-content-login">
           <img className="leaf" src={leaf} />
@@ -61,13 +81,17 @@ const RegisterModal = ({ register, setRegister, setLogin }) => {
           >
             Register
           </h1>
-          <Form>
-          <label className="label-form"> Full Name </label>
+          <Form onSubmit={onSubmitRegister}>
+            <label className="label-form"> Full Name </label>
             <Form.Group className="form-group" controlId="formBasicPassword">
               <Form.Control
                 className="form-field"
+                name="fullName"
+                value={fullName}
                 type="text"
                 placeholder="Full Name"
+                onChange={onChangeInput}
+                required="on"
               />
             </Form.Group>
 
@@ -75,8 +99,12 @@ const RegisterModal = ({ register, setRegister, setLogin }) => {
             <Form.Group className="form-group" controlId="formBasicPassword">
               <Form.Control
                 className="form-field"
+                name="email"
+                value={email}
                 type="email"
-                placeholder="Enter email"
+                placeholder="Email"
+                onChange={onChangeInput}
+                required="on"
               />
             </Form.Group>
 
@@ -84,22 +112,42 @@ const RegisterModal = ({ register, setRegister, setLogin }) => {
             <Form.Group className="form-group" controlId="formBasicPassword">
               <Form.Control
                 className="form-field"
+                name="password"
+                value={password}
                 type="password"
                 placeholder="Password"
+                onChange={onChangeInput}
+                required="on"
               />
             </Form.Group>
             <label className="label-form"> Phone </label>
             <Form.Group className="form-group" controlId="formBasicPassword">
               <Form.Control
                 className="form-field"
-                type="text"
+                name="phone"
+                value={phone}
+                type="number"
                 placeholder="Phone"
+                onChange={onChangeInput}
+              />
+            </Form.Group>
+            <label className="label-form"> Address </label>
+            <Form.Group className="form-group" controlId="formBasicPassword">
+              <Form.Control
+                className="form-field"
+                name="address"
+                value={address}
+                as="textarea"
+                type="text"
+                placeholder="Address"
+                onChange={onChangeInput}
               />
             </Form.Group>
 
-
             <div className="form-group-login">
-              <button className="button-login" type="submit">{isLoading ? isLoading : "Register"}</button>
+              <button className="button-login" type="submit">
+                {isLoading ? isLoading : "Register"}
+              </button>
             </div>
             <p className="lp-click-here">
               Already have an account ? Click{" "}
@@ -108,7 +156,8 @@ const RegisterModal = ({ register, setRegister, setLogin }) => {
           </Form>
         </div>
       </div>
-  )
+    )
+  );
 };
 
 export default RegisterModal;

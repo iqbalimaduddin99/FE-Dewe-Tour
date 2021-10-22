@@ -1,8 +1,8 @@
 import Icon from "../assets/Icon.png";
 import { Card, Container, Row } from "react-bootstrap";
 import CardContent from "../atoms/Card";
-
-import data from "../atoms/FakeData.json";
+// import data from '../atoms/FakeData.json'
+import {data} from '../atoms/FakeData'
 
 import Guarantee from "../assets/guarantee 1.png";
 import Heart from "../assets/heart 1.png";
@@ -12,7 +12,9 @@ import { useHistory } from "react-router";
 
 function LandingPage() {
   const history = useHistory();
+  // const dataJs = JSON.parse({data})
 
+  // console.log(data)
   return (
     <div style={{ backgroundColor: " #f1f1f1" }}>
       <div className="lp-color">
@@ -73,13 +75,15 @@ function LandingPage() {
       <div className="continer">
         <p className="group-tour">Group Tour</p>
       </div>
-      <Container>
-        <Row>
+      {/* <Container>
+        <Row> */}
+        <div className="layout-card">
           {data.map((item, index) => (
             <CardContent item={item} number={index} />
           ))}
-        </Row>
-      </Container>
+        {/* </Row>
+      </Container> */}
+      </div>
     </div>
   );
 }

@@ -1,31 +1,26 @@
 [
     {
-      
-      "name": "Mustang GT",
-      "type": "sport",
-      "image": "../assets/image1.png"
+      "id":1,
+      "title": "6D/4N Fun Tassie Vacation + Sydney",
+      "country": "Sydney",
+      "accomodation" : "Hotel Ibis",
+      "transportation" : "Flying Air",
+      "eat" : "Include as itinenary",
+      "duration" : "6 Days 5 Nights",
+      "dateTrip" : "28 Oct 1999",
+      "price": "10000000",
+      "description": "Sydney is good place for tourist"
     },
     {
-      
-      "name": "Chevrolet ZX",
-      "type": "SUV",
-      "image": "./assets/image1.png"
-    },{
-      "name": "Chevrolet ZX",
-      "type": "SUV",
-      "image": "./assets/image1.png"
-    },{
-      "name": "Chevrolet ZX",
-      "type": "SUV",
-      "image": "./assets/image1.png"
-    },{
-      "name": "Chevrolet ZX",
-      "type": "SUV",
-      "image": "./assets/image1.png"
-    },
-    {
-      "name": "Honda Civic",
-      "type": "Sedan",
-      "image": "./assets/image1.png"
+      "id":2,
+      "title": "8D/6N Wonderful Autumn in Sakura Country",
+      "country": "Japan",
+      "accomodation" : "Hotel Kimochi",
+      "transportation" : " ",
+      "eat" : "Include as itinenary",
+      "duration" : "6 Days 5 Nights",
+      "dateTrip" : "28 Oct 1999",
+      "price": "5000000",
+      "description": "Japan is good place for tourist"
     }
   ]

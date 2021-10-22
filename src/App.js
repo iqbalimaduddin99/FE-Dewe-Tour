@@ -1,19 +1,34 @@
 import {
   BrowserRouter as Router,
-  // Route,
+  Route,
   Switch,
   // useHistory,
 } from "react-router-dom";
 import "./App.css";
 import PrivateRoute from "./pages/PrivateRoute";
+
+import { useContext } from "react";
+
+import { UserContext } from "./context/UserContext";
+import Home from "./pages/Home";
+import PostDetail from "./pages/PostDetail";
 // import { API, setAuthToken } from "./config/api";
 
 function App() {
+  const [state] = useContext(UserContext);
 
   return (
     <Router>
       <Switch>
-        <PrivateRoute />
+        {/* {state.isLogin ? ( */}
+          <PrivateRoute />
+        {/* ) : (
+          <>
+          <Route exact path="/" component={Home} />
+          <Route exact path="/post-detail/:id" component={PostDetail} />
+          </>
+        )
+        } */}
       </Switch>
     </Router>
   );

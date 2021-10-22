@@ -42,9 +42,6 @@
 .nav-register {
   width: 100px;
   height: 30px;
-  left: 1235px;
-  top: 23px;
-
   color: #ffffff;
   background: #ffaf00;
   border-radius: 5px;
@@ -150,6 +147,8 @@
   width: 350px;
   height: 350px;
   margin: 40px;
+
+  padding: 10px;
   background: #ffffff;
   border-radius: 5px;
 }
@@ -170,6 +169,15 @@
   right: 0;
   left: 0;
   background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1;
+}
+.dd-overlay {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.1);
   z-index: 1;
 }
 
@@ -302,7 +310,7 @@
 
   font-weight: 700;
   /* font-size: 30px; */
-
+  cursor: pointer;
   align-items: center;
   text-align: center;
   background: #ffaf00;
@@ -349,8 +357,7 @@
 }
 
 .payment-card-content {
-  margin: 30px;
-  width: 1035px;
+  width: 100%;
   min-height: 500px;
 
   background: #ffffff;
@@ -486,8 +493,101 @@ justify-content: flex-end; */
   font-weight: 700;
   color: #ffffff;
 }
-.form-post{
-  
+.form-post {
   background-color: rgba(196, 196, 196, 0.5) !important;
   height: 45px;
+}
+.img-card {
+  width: 328px;
+  height: 241px;
+
+  border-radius: 5px;
+}
+
+.price-card {
+  font-size: large;
+  font-weight: 700;
+  color: #ffaf00;
+}
+.place-card {
+  font-size: large;
+  font-weight: 500;
+  color: #878787;
+}
+.dd-modal {
+  position: fixed;
+  height: 180px;
+  width: 200px;
+  background-color: #ffffff;
+  top: 2em;
+
+  right: 2em;
+  z-index: 2;
+}
+
+.icon-profile {
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  margin-right: 4em;
+  margin-top: 10px;
+  color: #ffffff;
+  border: 1px solid #ffffff;
+  cursor: pointer;
+  background: white;
+}
+.layout-card {
+  margin: 80px;
+  display: flex;
+  justify-content:space-around;
+  flex-wrap: wrap;
+}
+.approva {
+  width: 100px;
+  height: 35px;
+  font-weight: 700;
+  color: #ffffff;
+  background: #0acf83;
+  border-radius: 5px;
+  border: none;
+}
+
+.cancela {
+  width: 100px;
+  height: 35px;
+
+  font-weight: 700;
+  color: #ffffff;
+  margin-right: 20px;
+  border: none;
+  background: #ff0742;
+  border-radius: 5px;
+}
+.title-bold{
+  margin-top: 40px;
+  margin-left: 130px;
+  font-weight: bold;
+  font-size: 30px;
+}
+.layout-card-income {
+  margin: 80px;
+  margin-top: 40px;
+  display: flex;
+  /* justify-content:space-around; */
+  flex-wrap: wrap;
+}
+.group-income {
+ 
+  margin-top: 90px;
+  margin-right: 290px;
+  margin-bottom: -20px;
+}
+.nav-income {
+  width: 190px;
+  height: 40px;
+  font-weight: 700;
+  color: #ffffff;
+  background: #ffaf00;
+  border-radius: 5px;
+  border: none;
 }
