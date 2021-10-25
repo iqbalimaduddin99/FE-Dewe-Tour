@@ -1,12 +1,16 @@
-import CardPayment from "../atoms/Payment";
+import CardPayment from "./atoms/Payment";
 import { Card, Row, Col } from "react-bootstrap";
 import email from "../assets/Email.png";
 import phone from "../assets/Phone.png";
 import user from "../assets/Vector.png";
 import location from "../assets/place.png";
 import User from "../assets/Rectangle 12.png";
+import {useLocation} from 'react-router-dom'
 
 function Profile() {
+
+  // const location = useLocation()
+  // console.log(location.pathname)
   return (
     <div>
       <div style={{ display: "flex", justifyContent: "center" }}>
@@ -64,8 +68,8 @@ function Profile() {
           </Row>
         </Card>
       </div>
-
-      <div style={{ display: "flex", justifyContent: "center" }}>
+      <p style={{marginLeft:"8em", marginBottom:'2em'}} className="title-bold"> History Trip</p>
+      <div style={{ display: "flex", justifyContent: "center", marginBottom:'8em' }}>
         <CardPayment />
       </div>
     </div>

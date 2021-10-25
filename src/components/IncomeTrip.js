@@ -1,7 +1,7 @@
 import { useHistory } from "react-router";
-import CardContent from "../atoms/Card";
+import CardContent from "./atoms/Card";
 
-import { data } from "../atoms/FakeData";
+import { data } from "./atoms/FakeData";
 
 function IncomeTrip() {
     const history = useHistory()

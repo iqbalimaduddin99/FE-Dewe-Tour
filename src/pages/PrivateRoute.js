@@ -17,7 +17,7 @@ function PrivateRoute() {
   console.log(state)
   return (
     <>
-      {state.user.fullName === "admin" ? (
+      {state.user.findData.fullName === 'admin' ? (
         <>
           <Route exact path="/" component={ Home} />
           <Route exact path="/income-trip" component={IncomeTrip} />
@@ -34,7 +34,7 @@ function PrivateRoute() {
           <Route exact path="/logout" component={Logout} />
         </>
       )}
-    </>
+    </> 
   );
 }
 

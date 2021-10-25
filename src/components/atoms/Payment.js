@@ -1,15 +1,39 @@
-import { Card, Row, Col } from "react-bootstrap";
-import Icon from "../assets/IconBlack.png";
-import bill from "../assets/bill.png";
-import { useContext } from "react";
-import { UserContext } from "../context/UserContext";
+import { Card, Row, Col, Image } from "react-bootstrap";
+import Icon from "../../assets/IconBlack.png";
+import bill from "../../assets/bill.png";
+import { useContext, useState } from "react";
+import { UserContext } from "../../context/UserContext";
+import { useLocation } from "react-router";
+import QRCode from "../../assets/Group.png";
 
-function Payment({show}) {
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faFileInvoice } from "@fortawesome/free-solid-svg-icons";
+
+
+function Payment({show, setShow}) {
   const [state] = useContext(UserContext)
+  const [formData, setFormData] =  useState({
+    attachment: null,})
+  const [preview, setPreview] = useState()
+  const location = useLocation()
+
+  const handleChange= (e) => {
+    setFormData((prev) => ({
+      ...prev,
+      [e.target.name]:
+        e.target.type === "file" ? e.target.files : e.target.value,
+        
+    })) 
+    if (e.target.type === "file") {
+      let url = URL.createObjectURL(e.target.files[0]);
+      setPreview(url); }
+    }
+
+  const onHideLogin = () => setShow(!show);
   return  (
     <div>
       {(() => {
-        if (state.user.fullName !== "admin") {
+        if (state.user.findData.fullName !== "admin") {
           return (
             <Card className="payment-card-content">
               <div style={{ margin: "0px 90px 0px 50px" }}>
@@ -69,12 +93,58 @@ function Payment({show}) {
                       </div>{" "}
                     </div>
                   </Col>
-                  <Col lg={2}>
+                  {location.pathname === '/profile' ? <Col lg={2}>
                     <Row>
-                      <img style={{ marginTop: "20px" }} src={bill} />{" "}
+                      <img style={{ marginTop: "20px" }} src={QRCode} />{" "}
+                      <p style={{display:"flex", justifyContent:'center', marginTop: "5px"}}>QR Code</p>
+                    </Row>
+                  </Col> : <Col lg={2}>
+                    <Row>
+                    <label htmlFor="formFileLg">
+                    {preview ? 
+                      <img style={{ marginTop: "20px" }} src={preview} alt="receipt"  />
+                     :
+                  <div
+                    className="d-flex flex-column mt-4 justify-content-center align-items-center"
+                    style={{
+                      backgroundColor: "rgba(224, 200, 200, 25%)",
+                      color: "rgba(50,50,50,60%)",
+                      border: "2px solid",
+                      cursor:'pointer',
+                      width: "10rem",
+                      height: "9rem",
+                      borderRadius: "5px",
+                    }}
+                  >
+                    <FontAwesomeIcon style={{fontSize:'40px'}} icon={faFileInvoice}/>
+                      <div>Attacment is empty</div>
+                    
+
+                    {/* <p>
+                      {formData.attachment === null ||
+                      formData.attachment.length < 1
+                        ? "Attachment"
+                        : formData.attachment[0].name}
+                    </p> */}
+                  </div>
+                  }
+
+                  <input
+                    id="formFileLg"
+                    type="file"
+                    hidden
+                    name="attachment"
+                    onChange={(e) => handleChange(e)}
+                    accept=".jpg,.jpeg,.png,.svg"
+                    required
+                  />
+                </label>
+                      {/* <img style={{ marginTop: "20px" }} src={bill} />{" "} */}
                       <p className="small-text-petiter">upload payment proof</p>
                     </Row>
                   </Col>
+                  }
+                 
                 </Row>
                 <div style={{ marginTop: "45px" }}>
                   <div style={{ display: "flex" }}>
@@ -146,9 +216,12 @@ function Payment({show}) {
               </div>
             </Card>
           );
-        } else if (state.user.fullName === "admin") {
+        } else if (state.user.findData.fullName === "admin") {
           return show && (
-            <Card className="payment-card-content">
+            <div >
+            <div className="overlay-list" onClick={onHideLogin}/>
+            <Card className="payment-card-content-admin">
+              
               <div style={{ margin: "0px 90px 0px 50px" }}>
                 <nav className="nav-header">
                   <section className="icon-payment">
@@ -288,6 +361,8 @@ function Payment({show}) {
                 </section>
               </div>
             </Card>
+            
+            </div>
           )
         }
       })()}

@@ -24,12 +24,15 @@ const LoginModal = ({ login, setLogin, setRegister}) => {
     const onSubmitLogin = async (e) => {
       e.preventDefault();
       try {
-      const getItem = localStorage.getItem("user");
+      const getItem = localStorage.getItem("registered");
       const userData = JSON.parse(getItem);
-      if (userData.email === input.email && userData.password === input.password) {
+      // console.log(...userData)
+      const findData = userData.find((item => item.email === input.email && item.password === input.password ))
+      console.log(findData)
+      if (findData) {
         dispatch({
           type: "login_success", 
-          payload: {...userData}
+          payload: {findData}
         })
       history.push('/')
       } else {
@@ -38,7 +41,7 @@ const LoginModal = ({ login, setLogin, setRegister}) => {
 
         setInput({ email: "", password: "" });
       } catch (error) {
-          console.log(error?.res)
+          console.log(error)
       } 
     };
 

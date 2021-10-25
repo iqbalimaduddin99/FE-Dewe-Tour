@@ -1,16 +1,17 @@
 import { useContext, useState } from "react";
 import { useHistory } from "react-router";
 import Icon from "../assets/Icon.png";
-import DropdownComponent from "../atoms/DropDown";
+import DropdownComponent from "./atoms/DropDown";
 import { UserContext } from "../context/UserContext";
 import LoginModal from "./Login";
 import RegisterModal from "./Register";
 
-function Header() {
+function Header({handleChange}) {
   const [state] = useContext(UserContext);
   const [login, setLogin] = useState(false);
   const [register, setRegister] = useState(false);
   const [showDropDown, setShowDropDown] = useState(false);
+
   const history = useHistory();
 
   const handleLogin = () => setLogin(true);
@@ -25,6 +26,7 @@ function Header() {
           return (
             <header className="header">
               {" "}
+              
               <LoginModal
                 login={login}
                 setLogin={setLogin}
@@ -52,7 +54,7 @@ function Header() {
                 <p className="lp-desc">Explore</p>
                 <p className="lp-description">your amazing city together</p>
                 <div className="container">
-                  <input className="input-header" />
+                  <input onChange={handleChange} className="input-header"  />
                   <button className="btn-header">Search</button>
                 </div>
               </div>
@@ -109,7 +111,7 @@ function Header() {
                 <p className="lp-desc">Explore</p>
                 <p className="lp-description">your amazing city together</p>
                 <div className="container">
-                  <input className="input-header" />
+                  <input onChange={handleChange} className="input-header" />
                   <button className="btn-header">Search</button>
                 </div>
               </div>
@@ -129,7 +131,7 @@ function Header() {
                 <section className="icon">
                   <img src={Icon} />
                 </section>
-                <section onClick={onClickDropDown} className="group-login">
+                <section onClick={onClickDropDown} >
                   <img className="icon-profile" />
                 </section>
               </nav>

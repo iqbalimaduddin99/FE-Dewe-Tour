@@ -1,8 +1,7 @@
 import Icon from "../assets/Icon.png";
 import { Card, Container, Row } from "react-bootstrap";
-import CardContent from "../atoms/Card";
-// import data from '../atoms/FakeData.json'
-import {data} from '../atoms/FakeData'
+import CardContent from "./atoms/Card";
+import {data} from './atoms/FakeData'
 
 import Guarantee from "../assets/guarantee 1.png";
 import Heart from "../assets/heart 1.png";
@@ -10,7 +9,7 @@ import Agent from "../assets/agent 1.png";
 import Support from "../assets/support 1.png";
 import { useHistory } from "react-router";
 
-function LandingPage() {
+function LandingPage({search}) {
   const history = useHistory();
   // const dataJs = JSON.parse({data})
 
@@ -78,7 +77,22 @@ function LandingPage() {
       {/* <Container>
         <Row> */}
         <div className="layout-card">
-          {data.map((item, index) => (
+          {data.filter((cards) => {
+                  if (search == "") {
+                    return cards;
+                  } else if (
+                    cards?.title?.toLowerCase().includes(search.toLowerCase())
+                  ) {
+                    return cards;
+                  } else if (
+                    cards?.description
+                      ?.toLowerCase()
+                      .includes(search.toLowerCase())
+                  ) {
+                    return cards;
+                  }
+                })
+                .map((item, index) => (
             <CardContent item={item} number={index} />
           ))}
         {/* </Row>

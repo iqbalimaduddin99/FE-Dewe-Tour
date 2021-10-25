@@ -16,19 +16,19 @@ import PostDetail from "./pages/PostDetail";
 
 function App() {
   const [state] = useContext(UserContext);
-
+  
   return (
     <Router>
       <Switch>
-        {/* {state.isLogin ? ( */}
+        {state.isLogin ? (
           <PrivateRoute />
-        {/* ) : (
+        ) : (
           <>
           <Route exact path="/" component={Home} />
           <Route exact path="/post-detail/:id" component={PostDetail} />
           </>
         )
-        } */}
+        }
       </Switch>
     </Router>
   );

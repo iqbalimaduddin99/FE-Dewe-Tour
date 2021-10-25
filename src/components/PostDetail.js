@@ -6,16 +6,26 @@ import eat from "../assets/meal 1.png";
 import duration from "../assets/time 1.png";
 import calender from "../assets/calendar 1.png";
 
-import { useParams, useHistory } from 'react-router-dom'
-import data from "../atoms/FakeData.json"
-import { useState } from "react";
+import { useParams, useHistory } from "react-router-dom";
+import { data } from "./atoms/FakeData";
+import { useContext, useState } from "react";
+import { UserContext } from "../context/UserContext";
+
+import LoginModal from "./Login";
+import RegisterModal from "./Register";
 
 function PostDetail() {
-  const { id } = useParams()
-  const [number, setNumber] = useState(0)
-  const history = useHistory()
+  const { id } = useParams();
+  const [number, setNumber] = useState(0);
+  const history = useHistory();
+  const [state] = useContext(UserContext);
+  const [imageSet, setImageSet] = useState(false);
+  const [login, setLogin] = useState(false);
+  const [register, setRegister] = useState(false);
 
-  const findData = data.find(item => item.id === parseInt(id)) 
+  const handleRegister = () => setRegister(true);
+
+  const findData = data.find((item) => item.id === parseInt(id));
   var formatter = new Intl.NumberFormat("id-ID", {
     style: "currency",
     currency: "IDR",
@@ -23,24 +33,37 @@ function PostDetail() {
     //minimumFractionDigits: 0, // (this suffices for whole numbers, but will print 2500.10 as $2,500.1)
     //maximumFractionDigits: 0, // (causes 2500.99 to be printed as $2,501)
   });
-
+  const handleClickImage = () => {
+    setImageSet(true);
+  };
+  const handleClickHideImage = () => {
+    setImageSet(false);
+  };
   const Decrement = () => {
-      setNumber(number -1)
-      if (number < 1 ) {
-        setNumber(0)
-      }
-  } 
+    setNumber(number - 1);
+    if (number < 1) {
+      setNumber(0);
+    }
+  };
   const Increment = () => {
-    setNumber(number + 1 )
-}
-const Totally = findData.price * number
+    setNumber(number + 1);
+  };
+  const Totally = findData.price * number;
 
-const handleBookNow = () => {
-  history.push('/payment')
-}
+  const handleBookNow = () => {
+    history.push("/payment");
+  };
+  console.log(findData.image[0]);
+  console.log(findData.image.map((item) => item.image));
 
   return (
-    <div >
+    <div>
+      <LoginModal login={login} setLogin={setLogin} setRegister={setRegister} />
+      <RegisterModal
+        register={register}
+        setRegister={setRegister}
+        setLogin={setLogin}
+      />
       <div className="post-detail">
         <div style={{ marginLeft: "30px" }}>
           <h1 style={{ fontSize: "45px" }}>{findData.title}</h1>
@@ -49,24 +72,104 @@ const handleBookNow = () => {
           </p>
         </div>
         <div>
-          <img className="first-image" src={Rectangle} />
+          <img className="first-image" src={findData.image[0].image} />
         </div>
         <Row
           style={{
-            marginTop: "20px",
             display: "flex",
             justifyContent: "space-around",
           }}
         >
-          <Col>
-            <img style={{ width: "100%" }} src={Rectangle} />
-          </Col>
-          <Col>
-            <img style={{ width: "100%" }} src={Rectangle} />
-          </Col>
-          <Col>
-            <img style={{ width: "100%" }} src={Rectangle} />
-          </Col>
+          {findData.image.length > 3 ? (
+            imageSet ? (
+              <>
+              {findData.image.map((item) => (
+                <>
+                  <>
+                    <Col style={{ marginTop: "20px" }} lg={4}>
+                      <img
+                        style={{
+                          width: "100%",
+                          height: "280px",
+                          objectFit: "cover",
+                          borderRadius: "10px",
+                        }}
+                        src={item.image}
+                      />
+                    </Col>
+                  </>
+                </>
+              ))}
+              <div onClick={handleClickHideImage} className="image-map-hide">
+                      {" "}
+                      <p>Hide Image</p>{" "}
+                    </div>
+              </>
+            ) : (
+              <>
+                <>
+                  <Col style={{ marginTop: "20px" }} lg={4}>
+                    <img
+                      style={{
+                        width: "100%",
+                        height: "280px",
+                        objectFit: "cover",
+                        borderRadius: "10px",
+                      }}
+                      src={findData.image[0].image}
+                    />
+                  </Col>
+                </>
+                <>
+                  <Col style={{ marginTop: "20px" }} lg={4}>
+                    <img
+                      style={{
+                        width: "100%",
+                        height: "280px",
+                        objectFit: "cover",
+                        borderRadius: "10px",
+                      }}
+                      src={findData.image[1].image}
+                    />
+                  </Col>
+                </>
+                <>
+                  <Col style={{ marginTop: "20px" }} lg={4}>
+                    <img
+                      style={{
+                        width: "100%",
+                        height: "280px",
+                        objectFit: "cover",
+                        borderRadius: "10px",
+                      }}
+                      src={findData.image[2].image}
+                    />
+
+                    <div onClick={handleClickImage} className="image-map">
+                      {" "}
+                      <p>+ 3</p>{" "}
+                    </div>
+                  </Col>
+                </>
+              </>
+            )
+          ) : (
+            findData.image.map((item) => (
+              <>
+                <Col style={{ marginTop: "20px" }} lg={4}>
+                  <img
+                    style={{
+                      width: "100%",
+                      height: "280px",
+                      objectFit: "cover",
+                      borderRadius: "10px",
+                    }}
+                    src={item.image}
+                  />
+                </Col>
+              </>
+            ))
+          )}
         </Row>
 
         <div style={{ margin: "5px" }}>
@@ -120,7 +223,8 @@ const handleBookNow = () => {
           <div className="nav-header">
             <section>
               <p className="price-dp">
-                {formatter.format(findData.price)} <span className="price-person-dp">/ Person</span>
+                {formatter.format(findData.price)}{" "}
+                <span className="price-person-dp">/ Person</span>
               </p>
             </section>
             <section
@@ -130,7 +234,9 @@ const handleBookNow = () => {
               }}
             >
               <div className="plus-min">
-                <div onClick={Decrement} className="font-plus-min">-</div>
+                <div onClick={Decrement} className="font-plus-min">
+                  -
+                </div>
               </div>
 
               <div>
@@ -154,9 +260,15 @@ const handleBookNow = () => {
 
           <hr style={{ marginTop: "2px", border: "2px solid #858585" }} />
           <div className="book-now">
-            <button className="book-now-button">
-              <p onClick={handleBookNow} className="font-book-now">Book Now</p>
-            </button>
+            {state.isLogin === true ? (
+              <button onClick={handleBookNow} className="book-now-button">
+                <p className="font-book-now">Book Now</p>
+              </button>
+            ) : (
+              <button onClick={handleRegister} className="book-now-button">
+                <p className="font-book-now">Book Now</p>
+              </button>
+            )}
           </div>
         </div>
       </div>

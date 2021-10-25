@@ -29,12 +29,21 @@ const RegisterModal = ({ register, setRegister, setLogin }) => {
   const onSubmitRegister = async (e) => {
     e.preventDefault();
     try {
-      const getItem = localStorage.getItem("user");
+      const getItem = localStorage.getItem("registered");
       const userData = JSON.parse(getItem);
-      if (userData.email === input.email) {
+      console.log(userData)
+      const findRegister = userData?.find((item) => item.email === input.email)
+      if (userData !== null && findRegister ) {
         alert("Email already registered");
       }
-      localStorage.setItem("user", JSON.stringify(input));
+
+      const inputData = []
+      if (  userData !== null ) {
+        inputData.push(...userData)
+      }
+      inputData.push(input)
+
+      localStorage.setItem("registered", JSON.stringify(inputData));
 
       setInput({
         email: "",
@@ -44,18 +53,18 @@ const RegisterModal = ({ register, setRegister, setLogin }) => {
         address: "",
       });
     } catch (error) {
-      const e = error?.res;
-      if (e === 401 || e === 400) {
-        setError(error?.res.data.message);
-      }
+      // const e = error?.res;
+      // if (e === 401 || e === 400) {
+      //   setError(error?.res.data.message);
+      // }
 
-      console.log(error?.res);
       console.log(error);
+      console.log(error?.res);
     } finally {
       setTimeout(() => setError(""), 5000);
       setLoading("");
     }
-    console.log(error);
+    // console.log(error);
   };
 
   const onClickLogin = () => {
