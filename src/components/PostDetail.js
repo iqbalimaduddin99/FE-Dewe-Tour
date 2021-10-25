@@ -22,6 +22,19 @@ function PostDetail() {
   const [imageSet, setImageSet] = useState(false);
   const [login, setLogin] = useState(false);
   const [register, setRegister] = useState(false);
+  const [input, setInput] = useState({  title: "",
+  country: "",
+  accomodation: "",
+  transportation: "",
+  eat: "",
+  duration:"",
+  // day: "",
+  // night: "",
+  dateTrip: "",
+  price: "",
+  quota:'',
+  description: "",
+  imageFile: ""})
 
   const handleRegister = () => setRegister(true);
 
@@ -51,10 +64,9 @@ function PostDetail() {
   const Totally = findData.price * number;
 
   const handleBookNow = () => {
+ 
     history.push("/payment");
   };
-  console.log(findData.image[0]);
-  console.log(findData.image.map((item) => item.image));
 
   return (
     <div>

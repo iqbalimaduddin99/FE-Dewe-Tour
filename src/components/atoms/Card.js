@@ -41,6 +41,10 @@ function CardContent({ item, number }) {
       ) : (
         <Card onClick={() => handlePost(item.id)} className="card-content">
           <img className="img-card" src={item.image[0].image} />
+
+          <div className='quota'>
+                11/{item.quota}
+          </div>
           <Card.Body>
             <Card.Title>
               {item.title.length > 21
@@ -51,7 +55,9 @@ function CardContent({ item, number }) {
               <p className="price-card">{formatter.format(item.price)} </p>
               <p className="place-card"> {item.country}</p>
             </div>
+            
           </Card.Body>
+        
         </Card>
       )}
     </div>

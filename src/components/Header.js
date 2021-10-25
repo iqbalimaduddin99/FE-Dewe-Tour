@@ -5,6 +5,7 @@ import DropdownComponent from "./atoms/DropDown";
 import { UserContext } from "../context/UserContext";
 import LoginModal from "./Login";
 import RegisterModal from "./Register";
+import Avatar from 'react-avatar'
 
 function Header({handleChange}) {
   const [state] = useContext(UserContext);
@@ -17,7 +18,7 @@ function Header({handleChange}) {
   const handleLogin = () => setLogin(true);
   const handleRegister = () => setRegister(true);
   const onClickDropDown = () => setShowDropDown(true);
-
+  
   console.log(history.location.pathname);
   return (
     <div>
@@ -106,7 +107,8 @@ function Header({handleChange}) {
                   <section className="icon">
                     <img src={Icon} alt="" />
                   </section>
-                  <img onClick={onClickDropDown} className="icon-profile" />
+                  {/* <img onClick={onClickDropDown} className="icon-profile" /> */}
+                  <Avatar onClick={onClickDropDown} className="icon-profile-avatar" name={state.user.findData.fullName} />
                 </nav>
                 <p className="lp-desc">Explore</p>
                 <p className="lp-description">your amazing city together</p>
@@ -132,7 +134,8 @@ function Header({handleChange}) {
                   <img src={Icon} />
                 </section>
                 <section onClick={onClickDropDown} >
-                  <img className="icon-profile" />
+                  {/* <img  className="icon-profile" /> */}
+                  <Avatar  className="icon-profile-avatar" name={state.user.findData.fullName} />
                 </section>
               </nav>
             </div>

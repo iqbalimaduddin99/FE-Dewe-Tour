@@ -21,6 +21,7 @@ export const data = [
     duration: "6 Days 5 Nights",
     dateTrip: "28 Oct 1999",
     price: "10000000",
+    quota:'20',
     description: "Sydney is good place for tourist",
   },  
   {
@@ -30,7 +31,7 @@ export const data = [
     accomodation: "Hotel Kimochi",
     transportation: " ",
     // eat: "Include as itinenary",
-
+    quota:'15',
     image: [{image:image },{image:image1 },{image:image2 }],
     duration: "6 Days 5 Nights",
     dateTrip: "28 Oct 1999",
