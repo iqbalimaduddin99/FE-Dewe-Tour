@@ -2,13 +2,13 @@
 import Footer from "../components/Footer";
 import Header from "../components/Header";
 
-import LandingPage from "../components/List";
+import Body from "../components/List";
 
 function Payment() {
     return (
         <div style={{ backgroundColor: " #f1f1f1" }}>
             <Header/>
-            <LandingPage/>
+            <Body/>
             <Footer/>
         </div>
     );

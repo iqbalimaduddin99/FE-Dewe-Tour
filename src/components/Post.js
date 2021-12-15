@@ -1,6 +1,7 @@
-import { useState } from "react";
-import { Card, Form } from "react-bootstrap";
-import Pin from '../assets/VectorPin.png'
+import { useEffect, useState } from "react";
+import { Alert, Form } from "react-bootstrap";
+import Pin from "../assets/VectorPin.png";
+import { API } from "../config/api";
 
 function Post() {
   const [input, setInput] = useState({
@@ -13,12 +14,19 @@ function Post() {
     night: "",
     dateTrip: "",
     price: "",
-    quota:'',
+    quota: "",
     description: "",
     imageFile: "",
   });
-  const [preview, setPreview] = useState();
+  const [country, setCountry] = useState();
+  const [message, setMessage] = useState();
+  const [selectedFiles, setSelectedFiles] = useState([]);
 
+  // console.log(preview);
+  var formatter = new Intl.NumberFormat("id-ID", {
+    style: "currency",
+    currency: "IDR",
+  });
   const handleChange = (e) => {
     setInput({
       ...input,
@@ -26,31 +34,88 @@ function Post() {
         e.target.type === "file" ? e.target.files : e.target.value,
     });
 
-    if (e.target.type === "file") {
-      let url = URL.createObjectURL(e.target.files[0]);
-      setPreview(url);
+    if (e.target.files) {
+      const filesArray = Array.from(e.target.files).map((file) =>
+        URL.createObjectURL(file)
+      );
+
+      console.log("filesArray: ", filesArray);
+      setSelectedFiles(...selectedFiles, selectedFiles.concat(filesArray));
     }
   };
 
-  const handleSubmit = (e) => {
+  const getCountry = async () => {
+    const response = await API.get("/countries");
+    setCountry(response.data.data);
+  };
+
+  useEffect(() => {
+    getCountry();
+  }, []);
+
+  console.log(selectedFiles);
+  console.log(input.dateTrip);
+
+  console.log(input.dateTrip);
+  
+  const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const getItem = localStorage.getItem("posting");
-      const postData = JSON.parse(getItem);
+      const config = {
+        headers: {
+          "Content-type": "multipart/form-data",
+        },
+      };
 
-      const inputPostData = [];
-      if (postData !== null) {
-        inputPostData.push(...postData);
+      const formData = new FormData();
+      formData.append("title", input.title);
+      formData.append("countryId", input.country);
+      formData.append("accomodation", input.accomodation);
+      formData.append("transportation", input.transportation);
+      formData.append("eat", input.eat);
+      formData.append("day", input.day);
+      formData.append("night", input.night);
+      formData.append("dateTrip", input.dateTrip);
+      formData.append("price", input.price);
+      formData.append("quota", input.quota);
+      formData.append("description", input.description);
+      for (let i = 0; i < input.imageFile.length; i++) {
+        formData.append("image", input.imageFile[i]);
       }
-      inputPostData.push(input);
-
-      localStorage.setItem("posting", JSON.stringify(inputPostData));
-    } catch (error) {}
+      
+      const response = await API.post("/trip", formData, config);
+      setMessage(response.data.message);
+      setInput({
+        title: "",
+        country: "",
+        accomodation: "",
+        transportation: "",
+        eat: "",
+        day: "",
+        night: "",
+        dateTrip: "",
+        price: "",
+        quota: "",
+        description: "",
+        imageFile: "",
+      });
+      setSelectedFiles([])
+    } catch (error) {
+      console.log(error.response);
+    }
   };
 
   return (
     <div style={{ margin: "50px 100px 50px" }}>
       <p className="title-bold-add">Add Trip</p>
+      {["success"].map(
+        (variant, idx) =>
+          message && (
+            <Alert className="error-msg" key={idx} variant={variant}>
+              {message}
+            </Alert>
+          )
+      )}
       <Form onSubmit={handleSubmit}>
         <label className="label-form"> Title Trip </label>
         <Form.Group controlId="formBasicPassword">
@@ -60,26 +125,42 @@ function Post() {
             name="title"
             value={input.title}
             onChange={handleChange}
+            required="on"
           />
         </Form.Group>
         <label className="label-form">Country </label>
+
         <Form.Group controlId="formBasicPassword">
-        <select 
-            className="form-select" aria-label="Default select example">
-          <option style={{fontWeight:'bold'}} hidden>Choose Country</option>
-          <option value="1">Japan</option>
-          <option value="2">Sydney</option>
-          <option value="3">Madagascar</option>
-        </select>
+          <select
+            name="country"
+            value={input.country}
+            onChange={handleChange}
+            className="form-select"
+            aria-label="Default select example"
+          >
+            <option style={{ fontWeight: "bold" }} hidden>
+              Choose Country
+            </option>
+            {country?.map((item) => {
+              return (
+                <option key={item.id} value={item.id}>
+                  {item.name}
+                </option>
+              );
+            })}
+          </select>
         </Form.Group>
+
         <label className="label-form"> Accomodation </label>
         <Form.Group controlId="formBasicPassword">
           <Form.Control
             className="form-post"
             type="text"
             name="accomodation"
+            autocomplete="off"
             value={input.accomodation}
             onChange={handleChange}
+            required="on"
           />
         </Form.Group>
         <label className="label-form"> Transportation </label>
@@ -90,6 +171,7 @@ function Post() {
             name="transportation"
             value={input.transportation}
             onChange={handleChange}
+            required="on"
           />
         </Form.Group>
         <label className="label-form"> Eat </label>
@@ -100,6 +182,7 @@ function Post() {
             name="eat"
             value={input.eat}
             onChange={handleChange}
+            required="on"
           />
         </Form.Group>
         <label className="label-form"> Duration </label>
@@ -111,6 +194,7 @@ function Post() {
               name="day"
               value={input.day}
               onChange={handleChange}
+              required="on"
             />
           </Form.Group>
 
@@ -125,6 +209,7 @@ function Post() {
               value={input.night}
               onChange={handleChange}
               type="text"
+              required="on"
             />
           </Form.Group>
 
@@ -133,24 +218,37 @@ function Post() {
             Night{" "}
           </label>
         </div>
-        <label className="label-form"> Date Trip </label>
+        <label className="label-form">Quota</label>
         <Form.Group controlId="formBasicPassword">
           <Form.Control
             className="form-post"
             type="text"
+            name="quota"
+            value={input.quota}
+            onChange={handleChange}
+            required="on"
+          />
+        </Form.Group>
+        <label className="label-form"> Date Trip </label>
+        <Form.Group controlId="formBasicPassword">
+          <Form.Control
+            className="form-post"
+            type="date"
             name="dateTrip"
             value={input.dateTrip}
             onChange={handleChange}
+            required="on"
           />
         </Form.Group>
         <label className="label-form"> Price</label>
         <Form.Group controlId="formBasicPassword">
           <Form.Control
             className="form-post"
-            type="text"
+            type="number"
             name="price"
             value={input.price}
             onChange={handleChange}
+            required="on"
           />
         </Form.Group>
         <label className="label-form"> Description</label>
@@ -166,22 +264,32 @@ function Post() {
         </Form.Group>
         <p className="label-form">Image</p>
         <label>
-          {preview &&
-            <img style={{ marginTop: "20px", marginBottom:'30px' }} src={preview} alt="receipt" />
-          }
-            <div className="add-image-file"
-            ><section >Attach Here</section><section><img src={Pin} /></section> </div>
-        
+          {selectedFiles?.map((item) => {
+            return (
+              <img
+                style={{ marginTop: "20px", marginBottom: "30px" }}
+                src={item}
+                alt="receipt"
+              />
+            );
+          })}
 
-          <input
-            id="formFileLg"
-            type="file"
-            hidden
-            name="imageFile"
-            onChange={(e) => handleChange(e)}
-            accept=".jpg,.jpeg,.png,.svg"
-            required
-          />
+          <div className="add-image-file">
+            <section>Attach Here</section>
+            <section>
+              <img src={Pin} alt="" />
+            </section>
+            <input
+              id="formFileLg"
+              type="file"
+              hidden
+              name="imageFile"
+              onChange={(e) => handleChange(e)}
+              accept=".jpg,.jpeg,.png,.svg"
+              multiple
+              // required
+            />
+          </div>
         </label>
         <div className="form-group-login">
           <button className="button-login" type="submit">

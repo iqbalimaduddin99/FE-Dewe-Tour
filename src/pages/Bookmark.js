@@ -2,7 +2,7 @@
 import Footer from "../components/Footer";
 import Header from "../components/Header";
 
-import Body from "../components/IncomeTrip";
+import Body from "../components/Bookmark";
 
 function IncomeTrip() {
     return (

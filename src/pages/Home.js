@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Footer from "../components/Footer";
 import Header from "../components/Header";
-import LandingPage from "../components/LandingPage";
+import Body from "../components/LandingPage";
 
 function Home() {
     const [search, setSearch] = useState("");
@@ -13,7 +13,7 @@ function Home() {
     return (
         <div style={{ backgroundColor: " #f1f1f1" }}>
             <Header search={search} handleChange={handleChange} />
-            <LandingPage search={search}/>
+            <Body search={search}/>
             <Footer/>
         </div>
     );

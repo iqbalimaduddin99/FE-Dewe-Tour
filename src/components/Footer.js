@@ -1,5 +1,3 @@
-import Icon from "../assets/Icon.png";
-
 function Footer() {
   return (
     <footer className='footer'>

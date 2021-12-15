@@ -1,33 +1,39 @@
-import { useContext, useState } from "react";
-import { useHistory } from "react-router";
+import { useContext, useEffect, useState } from "react";
+import { useLocation } from "react-router";
 import Icon from "../assets/Icon.png";
 import DropdownComponent from "./atoms/DropDown";
 import { UserContext } from "../context/UserContext";
 import LoginModal from "./Login";
 import RegisterModal from "./Register";
-import Avatar from 'react-avatar'
+import Avatar from "react-avatar";
+import { API } from "../config/api";
 
-function Header({handleChange}) {
+function Header({ handleChange }) {
   const [state] = useContext(UserContext);
   const [login, setLogin] = useState(false);
   const [register, setRegister] = useState(false);
   const [showDropDown, setShowDropDown] = useState(false);
+  const [profile, setProfile] = useState();
 
-  const history = useHistory();
-
+  useEffect(async () => {
+    const response = await API.get('/user');
+    setProfile(response.data.data);
+  }, [state.updating]);
+  
+  const location = useLocation();
   const handleLogin = () => setLogin(true);
   const handleRegister = () => setRegister(true);
   const onClickDropDown = () => setShowDropDown(true);
-  
-  console.log(history.location.pathname);
+
+  const path = "http://localhost:5000/uploads/";
+console.log(state.user.data);
   return (
     <div>
       {(() => {
-        if (history.location.pathname === "/" && state.isLogin === false) {
+        if (location.pathname === "/" && state.isLogin === false) {
           return (
             <header className="header">
               {" "}
-              
               <LoginModal
                 login={login}
                 setLogin={setLogin}
@@ -55,16 +61,13 @@ function Header({handleChange}) {
                 <p className="lp-desc">Explore</p>
                 <p className="lp-description">your amazing city together</p>
                 <div className="container">
-                  <input onChange={handleChange} className="input-header"  />
+                  <input onChange={handleChange} className="input-header" />
                   <button className="btn-header">Search</button>
                 </div>
               </div>
             </header>
           );
-        } else if (
-          history.location.pathname !== "/" &&
-          state.isLogin === false
-        ) {
+        } else if (location.pathname !== "/" && state.isLogin === false) {
           return (
             <div>
               <LoginModal
@@ -79,7 +82,7 @@ function Header({handleChange}) {
               />
               <nav className="nav">
                 <section className="icon">
-                  <img src={Icon} />
+                  <img src={Icon} alt="" />
                 </section>
                 <section className="group-login">
                   <button onClick={handleLogin} className="nav-login">
@@ -92,10 +95,7 @@ function Header({handleChange}) {
               </nav>
             </div>
           );
-        } else if (
-          history.location.pathname === "/" &&
-          state.isLogin === true
-        ) {
+        } else if (location.pathname === "/" && state.isLogin === true) {
           return (
             <header className="header">
               <DropdownComponent
@@ -107,8 +107,19 @@ function Header({handleChange}) {
                   <section className="icon">
                     <img src={Icon} alt="" />
                   </section>
-                  {/* <img onClick={onClickDropDown} className="icon-profile" /> */}
-                  <Avatar onClick={onClickDropDown} className="icon-profile-avatar" name={state.user.findData.fullName} />
+                  {profile?.image !== null ? (
+                    <img
+                      src={path + profile?.image}
+                      onClick={onClickDropDown}
+                      className="icon-profile"
+                    />
+                  ) : (
+                    <Avatar
+                      onClick={onClickDropDown}
+                      className="icon-profile-avatar"
+                      name={state?.user?.data.fullName}
+                    />
+                  )}
                 </nav>
                 <p className="lp-desc">Explore</p>
                 <p className="lp-description">your amazing city together</p>
@@ -119,10 +130,7 @@ function Header({handleChange}) {
               </div>
             </header>
           );
-        } else if (
-          history.location.pathname !== "/" &&
-          state.isLogin === true
-        ) {
+        } else if (location.pathname !== "/" && state.isLogin === true) {
           return (
             <div>
               <DropdownComponent
@@ -131,11 +139,22 @@ function Header({handleChange}) {
               />{" "}
               <nav className="nav">
                 <section className="icon">
-                  <img src={Icon} />
+                  <img src={Icon} alt="" />
                 </section>
-                <section onClick={onClickDropDown} >
-                  {/* <img  className="icon-profile" /> */}
-                  <Avatar  className="icon-profile-avatar" name={state.user.findData.fullName} />
+                <section onClick={onClickDropDown}>
+                  {profile?.image !== null ? (
+                    <img
+                      src={path + profile?.image}
+                      onClick={onClickDropDown}
+                      className="icon-profile"
+                    />
+                  ) : (
+                    <Avatar
+                      onClick={onClickDropDown}
+                      className="icon-profile-avatar"
+                      name={state?.user?.data.fullName}
+                    />
+                  )}
                 </section>
               </nav>
             </div>

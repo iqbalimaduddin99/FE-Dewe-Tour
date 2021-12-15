@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 
-import leaf from "../assets/palm 1 (1).png";
-import flower from "../assets/hibiscus 1 (1).png";
-import { API } from "../config/api";
+import leaf from "../../assets/palm 1 (1).png";
+import flower from "../../assets/hibiscus 1 (1).png";
+import { API } from "../../config/api";
 import { Form, Alert } from "react-bootstrap";
 
 const RegisterModal = ({ register, setRegister, setLogin }) => {
@@ -74,7 +74,7 @@ const RegisterModal = ({ register, setRegister, setLogin }) => {
     register && (
       <div>
         <div className="overlay" onClick={onHideLogin} />
-        <div className="lp-modal-content-login">
+        <div className="lp-modal-login">
           <img alt="" className="leaf" src={leaf} />
           <img alt="" className="flower-register" src={flower} />
 

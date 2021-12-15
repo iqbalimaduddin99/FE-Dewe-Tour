@@ -1,10 +1,10 @@
 import React, { useState, useContext } from "react";
-import leaf from "../assets/palm 1 (1).png";
-import flower from "../assets/hibiscus 1 (1).png";
-import { UserContext } from "../context/UserContext";
+import leaf from "../../assets/palm 1 (1).png";
+import flower from "../../assets/hibiscus 1 (1).png";
+import { UserContext } from "../../context/UserContext";
 import { Form, Alert } from "react-bootstrap";
 import { useHistory, useLocation } from "react-router";
-import { API } from "../config/api";
+import { API } from "../../config/api";
 
 const LoginModal = ({ login, setLogin, setRegister }) => {
   const [input, setInput] = useState({ email: "", password: "" });
@@ -72,7 +72,7 @@ const LoginModal = ({ login, setLogin, setRegister }) => {
     login && (
       <div>
         <div className="overlay" onClick={onHideLogin} />
-        <div className="lp-modal-at-login">
+        <div className="lp-modal-content-at-login">
           <img className="leaf" src={leaf} alt="" />
           <img className="flower" src={flower} alt="" />
 
